@@ -64,14 +64,23 @@ class FilesDropPlugin extends ServerPlugin {
 		// Extract the attributes for the file request
 		$isFileRequest = false;
 		$attributes = $this->share->getAttributes();
-		$nickName = $request->hasHeader('X-NC-Nickname') ? urldecode($request->getHeader('X-NC-Nickname')) : null;
+		$nickName = $request->hasHeader('X-NC-Nickname') ? trim(urldecode($request->getHeader('X-NC-Nickname'))) : null;
 		if ($attributes !== null) {
 			$isFileRequest = $attributes->getAttribute('fileRequest', 'enabled') === true;
 		}
 
 		// We need a valid nickname for file requests
-		if ($isFileRequest && ($nickName == null || trim($nickName) === '')) {
+		if ($isFileRequest && !$nickName) {
 			throw new MethodNotAllowed('Nickname is required for file requests');
+		}
+		
+		if ($nickName !== null) {
+			try {
+				$this->view->verifyPath($path, $nickName);
+			} catch (\Exception $e) {
+				// If the path is not valid, we throw an exception
+				throw new MethodNotAllowed('Invalid path: ' . $path);
+			}
 		}
 		
 		// If this is a file request we need to create a folder for the user
