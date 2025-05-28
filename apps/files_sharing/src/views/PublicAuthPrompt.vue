@@ -49,13 +49,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { loadState } from '@nextcloud/initial-state'
 import { t } from '@nextcloud/l10n'
 
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcDialog from '@nextcloud/vue/dist/Components/NcDialog.js'
 import NcNoteCard from '@nextcloud/vue/dist/Components/NcNoteCard.js'
 import NcTextField from '@nextcloud/vue/dist/Components/NcTextField.js'
-import { loadState } from '@nextcloud/initial-state'
+
+import { getFilenameValidity } from '../../../files/src/utils/filenameValidity'
 
 export default defineComponent({
 	name: 'PublicAuthPrompt',
@@ -98,6 +100,21 @@ export default defineComponent({
 		if (talkNick) {
 			this.name = talkNick
 		}
+	},
+
+	watch: {
+		name() {
+			// Check validity of the new name
+			const newName = this.name.trim?.() || ''
+			const input = (this.$refs.input as Vue|undefined)?.$el.querySelector('input')
+			if (!input) {
+				return
+			}
+
+			const validity = getFilenameValidity(newName)
+			input.setCustomValidity(validity)
+			input.reportValidity()
+		},
 	},
 
 	methods: {
