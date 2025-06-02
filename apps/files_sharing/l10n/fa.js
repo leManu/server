@@ -15,6 +15,7 @@ OC.L10N.register(
     "You removed yourself" : "شما خدتان را حذف کردید",
     "Share for {user} expired" : "اشتراک برای {user} منقضی شده است",
     "Share expired" : "اشتراک منقضی شد",
+    "{actor} shared {file} with you" : "{actor} {file} را با شما به اشتراک گذاشت",
     "A file or folder shared by mail or by public link was <strong>downloaded</strong>" : "یک پرونده یا پوشه به اشتراک گذاشته شده از طریق پست یا از طریق لینک عمومی بارگیری شد",
     "A file or folder was shared from <strong>another server</strong>" : "یک پرونده یا پوشه از سرور دیگر به اشتراک گذاشته شد",
     "Sharing" : "اشتراک گذاری",
@@ -150,6 +151,7 @@ OC.L10N.register(
     "Unable to fetch inherited shares" : "واگذاری سهام ارثی امکان پذیر نیست",
     "Shares" : "اشتراک گذاری ها",
     "Unable to load the shares list" : "لیست سهام بارگیری نمی شود",
+    "Expires {relativetime}" : "منقضی در {relativetime}",
     "this share just expired." : "این اشتراک تازه منقضی شد",
     "Shared with you by {owner}" : "به اشتراک گذاشته شده با شما توسط {owner}",
     "Link to a file" : "پیوند به یک پرونده",
@@ -158,6 +160,7 @@ OC.L10N.register(
     "_Reject share_::_Reject shares_" : ["Reject share","Reject shares"],
     "_Restore share_::_Restore shares_" : ["Restore share","Restore shares"],
     "Shared" : "به اشتراک گذاشته شده ",
+    "Shared multiple times with different people" : "Shared multiple times with different people",
     "Shared with others" : "موارد به اشتراک گذاشته شده با دیگران",
     "Public file share" : "اشتراک عمومی پرونده",
     "Publicly shared file." : "پرونده بصورت عمومی به اشتراک گذاشته شده است",
@@ -215,10 +218,8 @@ OC.L10N.register(
     "You can upload into this folder" : "می‌توانید در این پوشه آپلود کنید",
     "Invalid server URL" : "ادرس سرور نامعتبر",
     "Failed to add the public link to your Nextcloud" : "خطا در افزودن ادرس عمومی به نکس کلود شما",
-    "Files" : "فایل‌ها",
     "Download all files" : "دانلود همه فایل ها",
     "Search for share recipients" : "Search for share recipients",
-    "No recommendations. Start typing." : "هیچ توصیه ای نیست شروع به تایپ کنید.",
-    "Allow download" : "Allow download"
+    "No recommendations. Start typing." : "هیچ توصیه ای نیست شروع به تایپ کنید."
 },
 "nplurals=2; plural=(n > 1);");

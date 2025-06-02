@@ -316,6 +316,8 @@ class OC_App {
 		$appId = self::cleanAppId($appId);
 		if ($appId === '') {
 			return false;
+		} elseif ($appId === 'core') {
+			return __DIR__ . '/../../../core';
 		}
 
 		if (($dir = self::findAppInDirectories($appId, $refreshAppPath)) != false) {
@@ -765,28 +767,6 @@ class OC_App {
 			$queue->add('OC\Migration\BackgroundRepair', [
 				'app' => $appId,
 				'step' => $step]);
-		}
-	}
-
-	/**
-	 * @param string $appId
-	 * @return \OC\Files\View|false
-	 */
-	public static function getStorage(string $appId) {
-		if (\OC::$server->getAppManager()->isEnabledForUser($appId)) { //sanity check
-			if (\OC::$server->getUserSession()->isLoggedIn()) {
-				$view = new \OC\Files\View('/' . OC_User::getUser());
-				if (!$view->file_exists($appId)) {
-					$view->mkdir($appId);
-				}
-				return new \OC\Files\View('/' . OC_User::getUser() . '/' . $appId);
-			} else {
-				\OCP\Server::get(LoggerInterface::class)->error('Can\'t get app storage, app ' . $appId . ', user not logged in', ['app' => 'core']);
-				return false;
-			}
-		} else {
-			\OCP\Server::get(LoggerInterface::class)->error('Can\'t get app storage, app ' . $appId . ' not enabled', ['app' => 'core']);
-			return false;
 		}
 	}
 

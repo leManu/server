@@ -271,7 +271,6 @@
     "A valid Login must be provided" : "Geçerli bir kullanıcı adı yazmalısınız",
     "Login contains whitespace at the beginning or at the end" : "Kullanıcı adının başında ya da sonunda boşluk var",
     "Login must not consist of dots only" : "Kullanıcı adı yalnızca noktalardan oluşamaz",
-    "Login is too long" : "Kullanıcı adı çok uzun",
     "Login is invalid because files already exist for this user" : "Kullanıcı adı geçersiz, bu kullanıcı için zaten bazı dosyalar var",
     "Account disabled" : "Hesap kullanımdan kaldırılmış",
     "Login canceled by app" : "Oturum açma uygulama tarafından iptal edildi",
@@ -441,20 +440,8 @@
     "Generate headline" : "Başlık oluşturulsun",
     "Summarizes text by reducing its length without losing key information." : "Temel içeriği kaybetmeden uzunluğunu kısaltarak metni özetler.",
     "Extracts topics from a text and outputs them separated by commas." : "Bir metindeki konuları ayıklar ve bunları virgül ile ayırarak sıralar.",
-    "Education Edition" : "Eğitim sürümü",
-    "File name is a reserved word" : "Bu dosya adı sistem kullanıma ayrılmıştır",
-    "File name contains at least one invalid character" : "Dosya adında en az bir geçersiz karakter var",
-    "File name is too long" : "Dosya adı çok uzun",
-    "Users" : "Kullanıcılar",
-    "%1$s shared »%2$s« with you and wants to add:" : "%1$s sizinle »%2$s« ögesini paylaştı ve eklemenizi istiyor:",
-    "%1$s shared »%2$s« with you and wants to add" : "%1$s sizinle »%2$s« ögesini paylaştı ve eklemenizi istiyor",
-    "»%s« added a note to a file shared with you" : "»%s« sizinle paylaştığı bir dosyaya bir not ekledi",
-    "Open »%s«" : "»%s« aç",
-    "%1$s shared »%2$s« with you" : "%1$s, sizinle »%2$s« ögesini paylaştı",
-    "%1$s shared »%2$s« with you." : "%1$s, sizinle »%2$s« ögesini paylaştı.",
-    "Click the button below to open it." : "Açmak için aşağıdaki düğmeye tıklayın.",
     "File is currently busy, please try again later" : "Dosya şu anda meşgul. Lütfen bir süre sonra yeniden deneyin",
     "Cannot download file" : "Dosya indirilemedi",
-    "Ensure there is a file called \".ocdata\" in the root of the data directory." : "Veri klasörü kökünde \".ocdata\" adında bir dosya bulunduğundan emin olun."
+    "Login is too long" : "Kullanıcı adı çok uzun"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

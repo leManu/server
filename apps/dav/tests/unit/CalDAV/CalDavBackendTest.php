@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2016 ownCloud, Inc.
@@ -17,6 +19,7 @@ use OCA\DAV\DAV\Sharing\Plugin as SharingPlugin;
 use OCA\DAV\Events\CalendarDeletedEvent;
 use OCP\IConfig;
 use OCP\IL10N;
+use Psr\Log\NullLogger;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Xml\Property\Href;
@@ -27,8 +30,6 @@ use function time;
  * Class CalDavBackendTest
  *
  * @group DB
- *
- * @package OCA\DAV\Tests\unit\CalDAV
  */
 class CalDavBackendTest extends AbstractCalDavBackend {
 	public function testCalendarOperations(): void {
@@ -58,7 +59,7 @@ class CalDavBackendTest extends AbstractCalDavBackend {
 		self::assertEmpty($calendars);
 	}
 
-	public function providesSharingData() {
+	public static function providesSharingData(): array {
 		return [
 			[true, true, true, false, [
 				[
@@ -457,7 +458,7 @@ EOD;
 		$this->assertNotNull($co);
 	}
 
-	public function providesCalendarQueryParameters() {
+	public static function providesCalendarQueryParameters(): array {
 		return [
 			'all' => [[0, 1, 2, 3], [], []],
 			'only-todos' => [[], ['name' => 'VTODO'], []],
@@ -519,7 +520,7 @@ EOD;
 		sort($stateLive['deleted']);
 		// test live state
 		$this->assertEquals($stateTest, $stateLive, 'Failed test delta sync state with events in calendar');
-		
+
 		/** modify/delete events in calendar */
 		$this->deleteEvent($calendarId, $event1);
 		$this->modifyEvent($calendarId, $event2, '20250701T140000Z', '20250701T150000Z');
@@ -618,7 +619,7 @@ EOD;
 		$this->assertCount(0, $subscriptions);
 	}
 
-	public function providesSchedulingData() {
+	public static function providesSchedulingData(): array {
 		$data = <<<EOS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -724,7 +725,7 @@ EOS;
 		}
 	}
 
-	public function providesCalDataForGetDenormalizedData(): array {
+	public static function providesCalDataForGetDenormalizedData(): array {
 		return [
 			'first occurrence before unix epoch starts' => [0, 'firstOccurence', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.1.1//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:413F269B-B51B-46B1-AFB6-40055C53A4DC\r\nDTSTAMP:20160309T095056Z\r\nDTSTART;VALUE=DATE:16040222\r\nDTEND;VALUE=DATE:16040223\r\nRRULE:FREQ=YEARLY\r\nSUMMARY:SUMMARY\r\nTRANSP:TRANSPARENT\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"],
 			'no first occurrence because yearly' => [null, 'firstOccurence', "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 4.1.1//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:413F269B-B51B-46B1-AFB6-40055C53A4DC\r\nDTSTAMP:20160309T095056Z\r\nRRULE:FREQ=YEARLY\r\nSUMMARY:SUMMARY\r\nTRANSP:TRANSPARENT\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"],
@@ -979,7 +980,7 @@ EOD;
 		$this->assertCount($count, $result);
 	}
 
-	public function searchDataProvider() {
+	public static function searchDataProvider(): array {
 		return [
 			[false, [], 4],
 			[true, ['timerange' => ['start' => new DateTime('2013-09-12 13:00:00'), 'end' => new DateTime('2013-09-12 14:00:00')]], 2],
@@ -1846,5 +1847,47 @@ EOD;
 		$this->assertEquals('Pasta Day', $results[1]['objects'][0]['SUMMARY'][0]);
 		$this->assertEquals('Missing DTSTART 1', $results[2]['objects'][0]['SUMMARY'][0]);
 		$this->assertEquals('Missing DTSTART 2', $results[3]['objects'][0]['SUMMARY'][0]);
+	}
+
+	public function testUnshare(): void {
+		$principalGroup = 'principal:' . self::UNIT_TEST_GROUP;
+		$principalUser = 'principal:' . self::UNIT_TEST_USER;
+
+		$l10n = $this->createMock(IL10N::class);
+		$l10n->method('t')
+			->willReturnCallback(fn ($text, $parameters = []) => vsprintf($text, $parameters));
+		$config = $this->createMock(IConfig::class);
+		$logger = new NullLogger();
+
+		$this->principal->expects($this->exactly(2))
+			->method('findByUri')
+			->willReturnMap([
+				[$principalGroup, '', self::UNIT_TEST_GROUP],
+				[$principalUser, '', self::UNIT_TEST_USER],
+			]);
+		$this->groupManager->expects($this->once())
+			->method('groupExists')
+			->willReturn(true);
+		$this->dispatcher->expects($this->exactly(2))
+			->method('dispatchTyped');
+
+		$calendarId = $this->createTestCalendar();
+		$calendarInfo = $this->backend->getCalendarById($calendarId);
+
+		$calendar = new Calendar($this->backend, $calendarInfo, $l10n, $config, $logger);
+
+		$this->backend->updateShares(
+			shareable: $calendar,
+			add: [
+				['href' => $principalGroup, 'readOnly' => false]
+			],
+			remove: []
+		);
+
+		$this->backend->unshare(
+			shareable: $calendar,
+			principal: $principalUser
+		);
+
 	}
 }

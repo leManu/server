@@ -24,7 +24,7 @@ OC.L10N.register(
     "Federated file sharing" : "Compartilhamento federado de arquivos",
     "Provide federated file sharing across servers" : "Fornecer compartilhamento federado entre servidores",
     "Confirm data upload to lookup server" : "Confirmar o upload de dados para o servidor de pesquisa",
-    "When enabled, all account properties (e.g. email address) with scope visibility set to \"published\", will be automatically synced and transmitted to an external system and made available in a public, global address book." : "Quando ativadas, todas as propriedades da conta (por exemplo, endereço de e-mail) com visibilidade de escopo definida como \"publicada\" serão automaticamente sincronizadas e transmitidas para um sistema externo e disponibilizadas em um catálogo de endereços público e global.",
+    "When enabled, all account properties (e.g. email address) with scope visibility set to \"published\", will be automatically synced and transmitted to an external system and made available in a public, global address book." : "Quando ativadas, todas as propriedades da conta (p. ex., endereço de e-mail) com visibilidade de escopo definida como \"publicado\" serão automaticamente sincronizadas e transmitidas para um sistema externo e disponibilizadas em um catálogo de endereços público e global.",
     "Disable upload" : "Desativar upload",
     "Enable data upload" : "Ativar upload de dados",
     "Confirm querying lookup server" : "Confirmar a consulta ao servidor de pesquisa",
@@ -66,10 +66,6 @@ OC.L10N.register(
     "Remote share" : "Compartilhamento remoto",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Deseja adicionar o compartilhamento remoto {name} de {owner}@{remote}?",
     "Remote share password" : "Senha do compartilhamento remoto",
-    "Incoming share could not be processed" : "O compartilhamento recebido não pôde ser processado",
-    "Clipboard is not available" : "A área de transferência não está disponível",
-    "Your Federated Cloud ID:" : "Seu ID de Nuvem Federada:",
-    "Twitter" : "Twitter",
-    "Diaspora" : "Diaspora"
+    "Incoming share could not be processed" : "O compartilhamento recebido não pôde ser processado"
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
