@@ -63,7 +63,6 @@ class SyncService {
 			$this->logger->error('Client exception:', ['app' => 'dav', 'exception' => $ex]);
 			throw $ex;
 		}
-		$this->logger->error('sync response', [$response]);
 
 		// 3. apply changes
 		// TODO: use multi-get for download
