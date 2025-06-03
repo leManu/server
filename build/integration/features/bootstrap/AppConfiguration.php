@@ -58,8 +58,14 @@ trait AppConfiguration {
 	 * @param string $value
 	 */
 	protected function deleteServerConfig($app, $parameter) {
+		$this->sendingTo('get', '/cloud/apps?filter=enabled');
+		$contents = $this->response->getBody()->getContents();
+		echo 'get enabled applications - ' . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . ' - ' . $contents . "\n";
+		$this->theHTTPStatusCodeShouldBe('200');
+		Assert::assertStringContainsString('testing', $contents);
+
 		$this->sendingTo('DELETE', "/apps/testing/api/v1/app/{$app}/{$parameter}");
-		echo "DELETE $app/$parameter - " . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . '/' . $this->response->getBody()->getContents() . "\n";
+		echo "DELETE $app/$parameter - " . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . '/' . $this->response->getBody() . "\n";
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($this->apiVersion === 1) {
 			$this->theOCSStatusCodeShouldBe('100');
