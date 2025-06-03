@@ -59,7 +59,7 @@ trait AppConfiguration {
 	 */
 	protected function deleteServerConfig($app, $parameter) {
 		$this->sendingTo('DELETE', "/apps/testing/api/v1/app/{$app}/{$parameter}");
-		echo "DELETE $app/$parameter - " . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . "\n";
+		echo "DELETE $app/$parameter - " . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . '/' . $this->response->getBody()->getContents() . "\n";
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($this->apiVersion === 1) {
 			$this->theOCSStatusCodeShouldBe('100');
