@@ -59,6 +59,7 @@ trait AppConfiguration {
 	 */
 	protected function deleteServerConfig($app, $parameter) {
 		$this->sendingTo('DELETE', "/apps/testing/api/v1/app/{$app}/{$parameter}");
+		echo "DELETE $app/$parameter - " . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . "\n";
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($this->apiVersion === 1) {
 			$this->theOCSStatusCodeShouldBe('100');
@@ -67,17 +68,20 @@ trait AppConfiguration {
 
 	protected function setStatusTestingApp($enabled) {
 		$this->sendingTo(($enabled ? 'post' : 'delete'), '/cloud/apps/testing');
+		echo 'ENABLING testing application - ' . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . "\n";
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($this->apiVersion === 1) {
 			$this->theOCSStatusCodeShouldBe('100');
 		}
 
 		$this->sendingTo('get', '/cloud/apps?filter=enabled');
+		$contents = $this->response->getBody()->getContents();
+		echo 'get enabled applications - ' . $this->response->getStatusCode() . '/' . $this->getOCSResponse($this->response) . ' - ' . $contents . "\n";
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
-			Assert::assertStringContainsString('testing', $this->response->getBody()->getContents());
+			Assert::assertStringContainsString('testing', $contents);
 		} else {
-			Assert::assertStringNotContainsString('testing', $this->response->getBody()->getContents());
+			Assert::assertStringNotContainsString('testing', $contents);
 		}
 	}
 
