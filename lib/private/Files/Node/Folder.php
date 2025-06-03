@@ -460,4 +460,13 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 		return $this->search($query);
 	}
+
+	public function verifyPath($fileName, $readonly = false): void {
+		$this->getPath();
+		$this->view->verifyPath(
+			$this->getPath(),
+			$fileName,
+			$readonly,
+		);
+	}
 }

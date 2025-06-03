@@ -71,7 +71,6 @@ class FilesDropPlugin extends ServerPlugin {
 			? trim(urldecode($request->getHeader('X-NC-Nickname')))
 			: null;
 
-		//
 		if ($request->getMethod() !== 'PUT') {
 			// If uploading subfolders we need to ensure they get created
 			// within the nickname folder
@@ -126,6 +125,13 @@ class FilesDropPlugin extends ServerPlugin {
 
 		// If we have a nickname, let's put everything inside
 		if ($nickname) {
+			try {
+				$node->verifyPath($nickname);
+			} catch (\Exception $e) {
+				// If the path is not valid, we throw an exception
+				throw new MethodNotAllowed('Invalid path: ' . $path);
+			}
+
 			// Put all files in the subfolder
 			$relativePath = '/' . $nickname . '/' . $relativePath;
 			$relativePath = str_replace('//', '/', $relativePath);
