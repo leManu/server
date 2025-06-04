@@ -34,7 +34,7 @@ class PrimaryObjectStoreConfig {
 	 * @return ?ObjectStoreConfig
 	 */
 	public function getObjectStoreConfigForRoot(): ?array {
-		$configs = $this->getObjectStoreConfig();
+		$configs = $this->getObjectStoreConfigs();
 		if (!$configs) {
 			return null;
 		}
@@ -56,7 +56,7 @@ class PrimaryObjectStoreConfig {
 	 * @return ?ObjectStoreConfig
 	 */
 	public function getObjectStoreConfigForUser(IUser $user): ?array {
-		$configs = $this->getObjectStoreConfig();
+		$configs = $this->getObjectStoreConfigs();
 		if (!$configs) {
 			return null;
 		}
@@ -77,7 +77,7 @@ class PrimaryObjectStoreConfig {
 	/**
 	 * @return ?array<string, ObjectStoreConfig>
 	 */
-	private function getObjectStoreConfig(): ?array {
+	public function getObjectStoreConfigs(): ?array {
 		$objectStore = $this->config->getSystemValue('objectstore', null);
 		$objectStoreMultiBucket = $this->config->getSystemValue('objectstore_multibucket', null);
 
@@ -166,6 +166,11 @@ class PrimaryObjectStoreConfig {
 	}
 
 	public function getObjectStoreForUser(IUser $user): string {
-		return $this->config->getUserValue($user->getUID(), 'homeobjectstore', 'objectstore', 'default');
+		$value = $this->config->getUserValue($user->getUID(), 'homeobjectstore', 'objectstore', null);
+		if ($value === null) {
+			$this->config->setUserValue($user->getUID(), 'homeobjectstore', 'objectstore', 'default');
+			$value = 'default';
+		}
+		return $value;
 	}
 }
