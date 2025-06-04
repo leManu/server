@@ -70,21 +70,9 @@ class ConfigManager {
 	 */
 	private function migrateAppConfigKeys(string $appId): void {
 		$lexicon = $this->appConfig->getConfigDetailsFromLexicon($appId);
-
-		// we store a list of config keys to compare with any 'copyFrom'
-		$keys = [];
-		foreach ($lexicon['entries'] as $entry) {
-			$keys[] = $entry->getKey();
-		}
-
 		foreach ($lexicon['entries'] as $entry) {
 			// only interested in entries with rename set
 			if ($entry->getRename() === null) {
-				continue;
-			}
-
-			if (in_array($entry->getRename(), $keys, true)) {
-				$this->logger->error('rename value should not exist as a valid config key within Lexicon');
 				continue;
 			}
 
